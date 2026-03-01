@@ -1,0 +1,11 @@
+"P_type","P_accuracy","P_performance","P_numtrials","P_rtvar","T_type","T_lower_rt","T_upper_rt","T_lower_pct","T_upper_pct","T_z","S_type","S_accuracy","S_lower_acc_trim","S_sample_size","mean_priming_z","sd_priming_z","n_targets","number_parts","total_rows","number_exclude"
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"accuracy","25%",NA,NA,0.125533037021,0.16457257581116,323,2680,409134,94770
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"accuracy","50%",NA,NA,0.126826977175734,0.164169688757392,321,2680,409134,96025
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"accuracy+sample","25%",NA,"30",0.125533037021,0.16457257581116,323,2680,409134,94770
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"accuracy+sample","25%",NA,"50",0.125533037021,0.16457257581116,323,2680,409134,94770
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"accuracy+sample","50%",NA,"30",0.126826977175734,0.164169688757392,321,2680,409134,96025
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"accuracy+sample","50%",NA,"50",0.126826977175734,0.164169688757392,321,2680,409134,96025
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"lower_bound_accuracy",NA,"10%",NA,0.124663129109178,0.163833125434429,310,2680,409134,113067
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"lower_bound_accuracy",NA,"5%",NA,0.124985941854093,0.164341194080763,315,2680,409134,104321
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"lower_bound_accuracy+sample",NA,"10%","30",0.124663129109178,0.163833125434429,310,2680,409134,113067
+"accuracy","75%",NA,NA,NA,"bounds_percent",NA,NA,"10%","10%",NA,"lower_bound_accuracy+sample",NA,"10%","50",0.124663129109178,0.163833125434429,310,2680,409134,113067

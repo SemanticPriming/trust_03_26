@@ -179,51 +179,40 @@ apply_stimulus_rules <- function(df, row) {
 ```{r}
 compute_priming <- function(df) {
   
-  # Re-index AFTER exclusions
-  df <- df %>%
-    arrange(observation, fix_sender) %>%
-    group_by(observation) %>%
-    mutate(pair_id = ceiling(row_number() / 2)) %>%
-    ungroup()
+  # -------------------------------------------------
+  # Use precomputed pairing
+  # -------------------------------------------------
   
-  # Keep only complete pairs (drop orphan trials)
-  df <- df %>%
+  pair_df <- df %>%
     group_by(observation, pair_id) %>%
-    filter(n() == 2) %>%
-    mutate(which = c("cue", "target")) %>%
-    ungroup()
-  
-  df$unique_pair <- paste(df$observation, df$pair_id, sep = "_")
-  
-  pair_df <- merge(
-    df[df$which == "cue", ],
-    df[df$which == "target", ],
-    by = "unique_pair",
-    all = TRUE
-  )
-  
-  # Remove incomplete merges (safety check)
-  pair_df <- pair_df %>%
-    filter(!is.na(word.x) & !is.na(word.y))
+    mutate(which = row_number()) %>%
+    ungroup() %>%
+    pivot_wider(
+      id_cols = c(observation, pair_id),
+      names_from = which,
+      values_from = c(word, class, correct,
+                      original_duration, rt_z, exclude_all)
+    ) %>%
+    filter(!is.na(word_1) & !is.na(word_2))
   
   # Keep only word-word pairs
   pair_df <- pair_df %>%
-    filter(class.x == "word" & class.y == "word")
+    filter(class_1 == "word" & class_2 == "word")
   
   # Rename for clarity
   pair_df <- pair_df %>%
     transmute(
-      observation = observation.x,
-      cue_word = word.x,
-      cue_type = class.x,
-      cue_correct = correct.x,
+      observation = observation,
+      cue_word = word_1,
+      cue_type = class_1,
+      cue_correct = correct_1,
       
-      target_word = word.y,
-      target_type = class.y,
-      target_correct = correct.y,
-      target_rt = original_duration.y,
-      target_rt_z = rt_z.y,
-      target_exclude = exclude_all.y
+      target_word = word_2,
+      target_type = class_2,
+      target_correct = correct_2,
+      target_rt = original_duration_2,
+      target_rt_z = rt_z_2,
+      target_exclude = exclude_all_2
     )
   
   # mark related and unrelated trials 
@@ -247,11 +236,16 @@ compute_priming <- function(df) {
   # ---------------------------------
   
   average_priming <- pair_df %>% 
-    group_by(target_word, type) %>% 
+    group_by(target_word, type, word_combo) %>% 
     summarise(
       mean_target_rt_z = mean(target_rt_z, na.rm = TRUE),
       .groups = "drop"
-    ) %>% 
+    ) %>%  
+    arrange(target_word, type) %>% 
+    group_by(type) %>% 
+    mutate(target_word = make.unique(target_word)) %>% 
+    select(-word_combo) %>% 
+    ungroup() %>% 
     pivot_wider(
       names_from = type,
       values_from = mean_target_rt_z
@@ -291,6 +285,23 @@ dat <- de_trials %>%
       select(observation, n_trials, n_correct, p_correct)
   ) %>% 
   select(-keep, -keep_participant, -keep_participant_answered, -c(time_run:time_switch), -duration, -Z_RT)
+
+# -------------------------------------------------
+# Precompute deterministic pairing ONCE
+# -------------------------------------------------
+
+dat <- dat %>%
+  arrange(observation, fix_sender) %>%
+  group_by(observation) %>%
+  mutate(pair_id = ceiling(row_number() / 2)) %>%
+  ungroup()
+
+# Drop incomplete (orphan) pairs once globally
+
+dat <- dat %>%
+  group_by(observation, pair_id) %>%
+  filter(n() == 2) %>%
+  ungroup()
 ```
 
 ## Calculate Participant Variables
@@ -445,9 +456,9 @@ write.csv(grid, "structured_multiverse_grid.csv", row.names = FALSE)
 ### Run Grid 
 
 ```{r}
+#start_time <- Sys.time()
 results <- map_dfr(
-  #1:nrow(grid),
-  1:10, 
+  1:nrow(grid),
   function(i) {
     
     row <- grid[i, ]
@@ -539,5 +550,13 @@ results <- map_dfr(
   }
 )
 
+#end_time <- Sys.time()
+#start_time - end_time
+
 write.csv(results, "multiverse_results.csv", row.names = F)
+```
+
+```{r}
+# total participants 
+length(unique(dat$observation))
 ```
