@@ -1,0 +1,267 @@
+---
+title: ""
+author: "Erin M. Buchanan"
+format: 
+  revealjs:
+    theme: night
+editor: source
+incremental: true 
+scrollable: true 
+css: "title.css"
+preview-links: true
+code-copy: true 
+highlight-style: github 
+editor_options: 
+  chunk_output_type: inline
+---
+
+## Outline {.smaller}
+
+-   A bit on the SPAML
+-   Researcher degrees of freedom
+-   Does this change German priming?
+
+## 
+
+Big Framing Slide: “Researcher Degrees of Freedom in Mega-Studies”
+
+Start by framing: • 25,000+ participants • 19 analyzed languages • 21+ million trials • Adaptive sampling • Item-level reliability focus
+
+Then say:
+
+“With a dataset this large, preprocessing and analytic decisions matter. So let me walk you through what we decided — and what we could have done differently.”
+
+⸻
+
+2️⃣ Stimulus Construction Decisions
+
+Cross-linguistic stimulus matching
+
+￼
+
+Key decisions: • Used OpenSubtitles corpus for frequency • Used fastText word embeddings (subs2vec models) • Used cosine similarity • Selected top 5 neighbors per concept • Cross-referenced across languages • Native speaker validation • Avoided selecting in English first → then translating
+
+Slide idea:
+
+“Alternative multiverse options” • Different corpus (Wikipedia only?) • Different embedding model (word2vec? GloVe?) • Lemmatized vs surface forms • Different similarity threshold (\<.15 for unrelated) • Association norms instead of embeddings
+
+You can say:
+
+“Each of these would produce a different stimulus set — potentially a different priming distribution.”
+
+⸻
+
+3️⃣ Nonword Construction Decisions
+
+Major methodological point.
+
+Decisions: • Wuggy-like algorithm for alphabetic languages • Radical/stroke manipulation for logographic languages • Native speaker validation • Matched length and transition frequency • Avoided pseudohomophones
+
+Multiverse angle: • What if: • We allowed pseudohomophones? • Matched bigram frequency differently? • Used pronounceability norms? • Used simpler random strings?
+
+Nonword construction affects: • Lexical decision difficulty • RT distribution tails • Accuracy exclusions • Cross-language comparability
+
+⸻
+
+4️⃣ Sampling Design Decisions (Huge Strength of Study)
+
+Adaptive AIPE sampling
+
+￼
+
+Decisions: • Minimum per item: 50 • Maximum per item: 320 • Stopping rule: SE ≈ 0.09 • Decreased probability once item met precision goal • Z-scored by participant session
+
+Multiverse perspective: • Fixed N per language instead? • Fixed N per item? • Different stopping rule (SE = .06? .12?) • Target reliability (.80) instead of SE?
+
+This is a perfect place to discuss:
+
+“We optimized precision, not power — which is a philosophical choice.”
+
+⸻
+
+5️⃣ Participant-Level Exclusion Decisions
+
+Pre-registered criteria
+
+￼
+
+Participant-level: • Age ≥ 18 • ≥100 trials • ≥80% accuracy
+
+Critical deviation: • Two interpretations of accuracy formula • Strict version retained fewer participants
+
+Multiverse slide:
+
+Run: • 80% • 75% • 85% • Alternative accuracy formula • No accuracy exclusion
+
+Ask:
+
+“Does priming change meaningfully?”
+
+This is an extremely clean multiverse axis.
+
+⸻
+
+6️⃣ Trial-Level Cleaning Decisions
+
+Major researcher degrees of freedom here.
+
+Decisions: • Removed: • Timeouts (\>3000ms) • Incorrect trials • RT \< 160ms • Z-scored within session • Tested: • Full data • \|Z\| \> 2.5 removed • \|Z\| \> 3.0 removed
+
+Multiverse axes: • No lower bound? • 100ms instead of 160ms? • No Z trimming? • 2.0 instead of 2.5? • 99th percentile trimming? • Log-transform instead of Z-score? • Mixed-effects model at trial level instead of item-level averages?
+
+You already have a built-in mini-multiverse: • Full • Z2.5 • Z3.0
+
+That’s very elegant.
+
+⸻
+
+7️⃣ Priming Score Construction Decision
+
+Priming defined as:
+
+Unrelated (Z) − Related (Z)
+
+Item-level averages.
+
+Alternatives: • Trial-level mixed model • Participant-level priming • Median instead of mean • Raw RT difference instead of Z • Log-RT difference • Include accuracy in composite score • Drift-diffusion modeling
+
+This is a great “hidden degrees of freedom” slide.
+
+⸻
+
+8️⃣ Model Specification Decisions
+
+Hypothesis 1: • Intercept-only model • Priming \> 0
+
+Hypothesis 2: • Add random intercept for language • Compare AIC • Conclude heterogeneity if ΔAIC ≥ 2
+
+￼
+
+Multiverse: • Bayesian model? • Random slopes? • Treat language as fixed effect? • Meta-analytic approach? • Hierarchical trial-level model? • Cross-classified random effects (item × language)?
+
+You can say:
+
+“We chose parsimony. But a richer hierarchical model might redistribute variance differently.”
+
+⸻
+
+9️⃣ Reliability Decisions
+
+Item reliability: • Split-half • Spearman-Brown correction • 100 random splits
+
+Participant reliability: • Same approach
+
+Multiverse: • Bootstrapped reliability? • Hierarchical reliability? • ICC instead of split-half? • Reliability at language level?
+
+This connects directly to: • Sample size per item • SE stopping rule • Interpretation of cross-language variance
+
+⸻
+
+🔟 Cross-Language Variability Framing
+
+You found: • Small but non-zero language variance • Pseudo R² \< .01
+
+Multiverse extensions: • Does variance increase with: • Orthographic depth? • Morphological complexity? • Corpus size? • Item reliability? • Script type (logographic vs alphabetic)?
+
+This moves the talk from: “Do languages differ?” to “What explains why they differ?”
+
+⸻
+
+🎯 How to Present the Multiverse Section
+
+I’d structure it like this:
+
+Slide 1: “Researcher Degrees of Freedom”
+
+List 6 decision layers: • Stimuli • Nonwords • Sampling • Exclusions • Priming computation • Modeling
+
+Slide 2: “What Actually Changes the Result?”
+
+Show: • Effect stays positive • Magnitude shifts slightly • Language variance small but stable
+
+Then say:
+
+“The priming effect is robust — but its size and heterogeneity are conditional on analytic decisions.”
+
+⸻
+
+💡 High-Level Conceptual Framing for Audience
+
+You could close this section with: • Registered Reports constrain flexibility • But multiverse thinking reveals where flexibility still exists • Large-scale datasets amplify the impact of preprocessing choices • Transparency + shared data → enables secondary multiverse analyses
+
+⸻
+
+If You Want a Very Sharp Conceptual Ending Slide
+
+Title:
+
+“What Did We Learn About Priming — and What Did We Learn About Decisions?”
+
+Two columns:
+
+Priming • Robust across 19 languages • Small heterogeneity • Improved item reliability
+
+Decisions • Exclusion rules slightly shift magnitude • Z-thresholds minimally affect conclusions • Stimulus selection is a massive hidden decision • Modeling framework shapes interpretation of variability
+
+⸻
+
+If you’d like, I can also: • Draft a 5-minute version • Draft a 15-minute version • Help you turn this into slides • Or help you design an actual small multiverse re-analysis plan for a follow-up paper
+
+## paper
+
+![<https://ars.els-cdn.com/content/image/1-s2.0-S0010945223002964-mmc3.pdf>](images/clipboard-2667185129.png)
+
+<https://ars.els-cdn.com/content/image/1-s2.0-S0010945223002964-mmc4.pdf>
+
+![](images/clipboard-3980866384.png)
+
+## What we did 
+
++-----------------+-----------------+------------------+-----------------+
+|                 | Participants    | Trials           | Stimuli         |
++=================+=================+==================+=================+
+| External Events |                 | Duplicate trials | Miscodings      |
++-----------------+-----------------+------------------+-----------------+
+| Fixed           | 18 years        | \< 160 ms        |                 |
+|                 |                 |                  |                 |
+|                 | 80% accuracy    | \> 3000 ms       |                 |
+|                 |                 |                  |                 |
+|                 | 100 Trials      | Correct          |                 |
++-----------------+-----------------+------------------+-----------------+
+| Data            |                 | Z-score 2.5      |                 |
+|                 |                 |                  |                 |
+|                 |                 | Z-score 3.0      |                 |
++-----------------+-----------------+------------------+-----------------+
+
+## What we could do
+
+note calculated on the full data each criteria and then removed on each stage to avoid order effects
+
+| Type         | Explanation         | Options                       |
+|--------------|---------------------|-------------------------------|
+| Participants | No exclusion\*      | None\*                        |
+| Participants | Age\*               | 18 years\*                    |
+| Participants | Accuracy            | none, 75%, 80%, 85%           |
+| Participants | Number of Trials    | none, 50, 100                 |
+| Participants | Performance cut off | 5%, 10% performers            |
+| Participants | RT cut off          | Lowest RT variability 5%, 10% |
+
+## Trials
+
+| Type   | Explanation    | Options             |
+|--------|----------------|---------------------|
+| Trials | No exclusion   | None                |
+| Trials | Lower Bound RT | None, 100, 160, 200 |
+| Trials | Upper Bound RT | None\*, 3000, 2500  |
+| Trials | Z-Score        | None, 2.5, 3.0      |
+| Trials | Lower Bound    | 5%, 10% trimming    |
+| Trials | Upper Bound    | 5%, 10% trimming    |
+
+## Stimuli 
+
+| Type    | Explanation          | Options          |
+|---------|----------------------|------------------|
+| Stimuli | No exclusion         | None             |
+| Stimuli | Accuracy             | None, 25%, 50%   |
+| Stimuli | Sample size          | None, 30, 50     |
+| Stimuli | Lower Bound Accuracy | 5%, 10% trimming |

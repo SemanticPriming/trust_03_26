@@ -1,0 +1,10 @@
+
+/* Reduce the main title size */
+.title {
+  font-size: 3rem !important;   /* adjust as needed */
+}
+
+/* Optional: reduce subtitle too */
+.subtitle {
+  font-size: 1.2rem !important;
+}
