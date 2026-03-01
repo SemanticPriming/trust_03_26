@@ -456,104 +456,83 @@ write.csv(grid, "structured_multiverse_grid.csv", row.names = FALSE)
 ### Run Grid 
 
 ```{r}
-#start_time <- Sys.time()
-results <- map_dfr(
-  1:nrow(grid),
-  function(i) {
-    
-    row <- grid[i, ]
-    
-    df <- dat
-    
-    # -------------------------
-    # 1. PARTICIPANTS
-    # -------------------------
-    
-    df <- apply_participant_rules(df, row)
-    
-    # -------------------------
-    # 2. STIMULI
-    # -------------------------
-    
-    df <- apply_stimulus_rules(df, row)
-    
-    # -------------------------
-    # 3. TRIALS (non-Z)
-    # -------------------------
-    
-    df <- apply_trial_rules_no_z(df, row)
-    
-    # -------------------------
-    # 4. Combine exclusions
-    # -------------------------
-    df <- df %>%
-      mutate(
-        exclude_participant = coalesce(exclude_participant, FALSE),
-        exclude_trial = coalesce(exclude_trial, FALSE),
-        exclude_stimulus = coalesce(exclude_stimulus, FALSE)
-      )
-    
-    # -------------------------
-    # 5. COMPUTE Z rt (based only on eligible trials)
-    # -------------------------
-
-    df <- df %>%
-      group_by(observation) %>%
-      mutate(
-        # compute mean and sd only on correct + non-trial-excluded rows
-        z_mean = mean(original_duration[correct == TRUE & !exclude_trial], na.rm = TRUE),
-        z_sd   = sd(original_duration[correct == TRUE & !exclude_trial], na.rm = TRUE),
-        rt_z = (original_duration - z_mean) / z_sd
-      ) %>%
-      ungroup() %>%
-      select(-z_mean, -z_sd)
-    
-    # -------------------------
-    # 5b. Add Z exclusion if specified
-    # -------------------------
-    if (!is.null(row$T_z) && !is.na(row$T_z)) {
+run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
+  
+  results <- map_dfr(
+    start_i:end_i,
+    function(i) {
       
-      z_cut <- as.numeric(row$T_z)
+      row <- grid[i, ]
+      df <- dat
       
+      # 1. Participants
+      df <- apply_participant_rules(df, row)
+      
+      # 2. Stimuli
+      df <- apply_stimulus_rules(df, row)
+      
+      # 3. Trials (non-Z)
+      df <- apply_trial_rules_no_z(df, row)
+      
+      # 4. Combine exclusions
       df <- df %>%
         mutate(
-          exclude_z = abs(rt_z) > z_cut
+          exclude_participant = coalesce(exclude_participant, FALSE),
+          exclude_trial = coalesce(exclude_trial, FALSE),
+          exclude_stimulus = coalesce(exclude_stimulus, FALSE)
         )
       
-    } else {
-      
+      # 5. Compute Z
       df <- df %>%
-        mutate(exclude_z = FALSE)
+        group_by(observation) %>%
+        mutate(
+          z_mean = mean(original_duration[correct == TRUE & !exclude_trial], na.rm = TRUE),
+          z_sd   = sd(original_duration[correct == TRUE & !exclude_trial], na.rm = TRUE),
+          rt_z   = (original_duration - z_mean) / z_sd
+        ) %>%
+        ungroup() %>%
+        select(-z_mean, -z_sd)
+      
+      # 5b. Z exclusion
+      if (!is.null(row$T_z) && !is.na(row$T_z)) {
+        z_cut <- as.numeric(row$T_z)
+        df <- df %>% mutate(exclude_z = abs(rt_z) > z_cut)
+      } else {
+        df <- df %>% mutate(exclude_z = FALSE)
+      }
+      
+      # 6. Final exclusion flag
+      df <- df %>%
+        mutate(
+          exclude_all = exclude_participant |
+                        exclude_trial |
+                        exclude_stimulus |
+                        exclude_z
+        )
+      
+      # 7. Priming
+      priming <- compute_priming(df)
+      
+      bind_cols(row, priming)
     }
-    
-    # -------------------------
-    # 6. combine just before priming
-    # -------------------------
-    df <- df %>%
-      mutate(
-        exclude_all = exclude_participant |
-                      exclude_trial |
-                      exclude_stimulus |
-                      exclude_z
-      ) 
+  )
+  
+  filename <- paste0("multiverse_chunk_", chunk_id, ".csv")
+  write.csv(results, filename, row.names = FALSE)
+  
+  return(results)
+}
 
-    # -------------------------
-    # 7. Compute Priming
-    # -------------------------
-    
-    priming <- compute_priming(df)
-    
-    bind_cols(
-      row,
-      priming
-    )
-  }
-)
+chunk_size <- 20
+total_specs <- nrow(grid)
 
-#end_time <- Sys.time()
-#start_time - end_time
+starts <- seq(1, total_specs, by = chunk_size)
+ends   <- pmin(starts + chunk_size - 1, total_specs)
 
-write.csv(results, "multiverse_results.csv", row.names = F)
+for (k in seq_along(starts)) {
+  run_multiverse_chunk(starts[k], ends[k], paste0("F_", k))
+  cat("Forward:", starts[k], "\n")
+}
 ```
 
 ```{r}
