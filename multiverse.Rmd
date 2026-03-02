@@ -225,7 +225,7 @@ compute_priming <- function(df) {
                    by = "word_combo", all.x = T)
   
   total_rows <- nrow(pair_df)
-  number_exclude <- sum(pair_df$target_exclude)
+  number_exclude <- sum(pair_df$target_exclude, na.rm = T)
   # Remove rows marked for exclusion at target level
   pair_df <- pair_df %>%
     filter(!target_exclude)
@@ -457,6 +457,9 @@ write.csv(grid, "structured_multiverse_grid.csv", row.names = FALSE)
 ### Run Grid
 
 ```{r}
+# randomly order grid for presentation random sample
+grid <- grid[sample(1:nrow(grid), size = nrow(grid)), ]
+
 run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
   
   results <- map_dfr(
@@ -508,7 +511,9 @@ run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
           exclude_all = exclude_participant |
                         exclude_trial |
                         exclude_stimulus |
-                        exclude_z
+                        exclude_z |
+                        !correct |
+                        is.na(correct)
         )
       
       # 7. Priming

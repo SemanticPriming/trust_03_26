@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Semantic Priming, Many Choices, and How to Examine Them"
 author: "Erin M. Buchanan"
 format: 
   revealjs:
@@ -13,229 +13,256 @@ code-copy: true
 highlight-style: github 
 editor_options: 
   chunk_output_type: inline
+bibliography: references.bib
 ---
 
 ## Outline {.smaller}
 
--   A bit on the SPAML
--   Researcher degrees of freedom
--   Does this change German priming?
+-   SPAML Background
+-   Researcher Degrees of Freedom + Multiverse
+-   Processing Pipeline for Priming
+
+## Many Thanks {.smaller}
+
+```{css}
+h1.title {
+font-size: 1.5em;
+}
+```
 
-## 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(wordcloud2)
+library(patchwork)
+```
 
-Big Framing Slide: “Researcher Degrees of Freedom in Mega-Studies”
+::::: columns
+::: {.column width="50%"}
+<center>
+
+```{r out.width="100%"}
+include_graphics("images/authors_spaml.png")
+```
+
+```{r out.width="60%"}
+include_graphics("images/psa_logo.png")
+```
+
+</center>
+:::
+
+::: {.column width="50%"}
+<center>
+
+```{r out.width="100%"}
+include_graphics("images/zpid_logo.png")
+include_graphics("images/hu_logo.jpg")
+```
+
+</center>
+:::
+:::::
+
+## The SPAML Project {.smaller}
+
+-   *Scope*:
+    -   A global big-team science study on **semantic priming across many languages (SPAML)**
+-   *Goals*:
+    -   Create a large-scale, multilingual priming dataset
+    -   Test whether the priming effect replicates across cultures and languages
+    -   Compare similarities and differences across languages
+
+## Why SPAML Matters {.smaller}
+
+-   Large scale priming datasets are sparse @hutchison2013
+-   Cross-linguistic data enables us to critically think about cognitive processes versus linguistic context
+-   Datasets are the greatest! @buchanan2019
+-   @bochynska2023 shows that linguistics is heavily WEIRD
+
+## Why SPAML Matters {.smaller}
+
+![](images/clipboard-672423190.png)
+
+## SPAML Stimuli {.smaller}
+
+-   Selected by language word frequency and similarity using Open Subtitles
+-   1000 cue-target pairs
+-   Matched across languages - soon to be 45 *thanks to the National Science Foundation*
+
+```{r eval = F}
+langs <- data.frame(
+  word = c("Afrikaans", "Arabic", "Bulgarian", "Catalan", "Czech", "Danish", "German", "Greek", "English", "Spanish", "Estonian", "Basque", "Farsi", "Finnish", "French", "Galician", "Hebrew", "Hindi", "Croatian", "Hungarian", "Armenian", "Indonesian", "Italian", "Japanese", "Korean", "Lithuanian", "Latvian", "Dutch", "Norwegian", "Polish", "Portuguese", "Romanian", "Russian", "Slovak", "Slovenian", "Serbian", "Swedish", "Tamil", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese", "Simplified Chinese", "Traditional Chinese"),
+  freq = rep(1,45)
+)
+  
+wordcloud2(data = langs, 
+           minRotation = 0, 
+           maxRotation = 0,
+           minSize = 1,
+           size = .15, 
+           color = "random-light",
+           backgroundColor = "black",
+           shape = "square")
+```
+
+![](images/clipboard-1996156027.png)
+
+## SPAML Procedure {.smaller}
+
+<center>
+
+```{r out.width="75%", out.height="75%"}
+include_graphics("images/procedure.jpg")
+```
+
+</center>
 
-Start by framing: • 25,000+ participants • 19 analyzed languages • 21+ million trials • Adaptive sampling • Item-level reliability focus
+## SPAML Geopolitical Regions {.smaller}
 
-Then say:
+```{r}
+knitr::include_graphics("images/binned_country.png")
+```
 
-“With a dataset this large, preprocessing and analytic decisions matter. So let me walk you through what we decided — and what we could have done differently.”
+## The SPAML People {.smaller}
 
-⸻
+-   *People*:
+    -   325 official authors
+    -   393 completed at least one credit category
+-   *Participants*:
+    -   35,904 participants opened the study link
+    -   31,645 participants completed one study trial
+    -   26,971 were retained for analysis
 
-2️⃣ Stimulus Construction Decisions
+## The SPAML Words {.smaller}
 
-Cross-linguistic stimulus matching
+-   Words with data
+    -   101,397 unique word forms
+        -   47,144 words
+        -   54,509 non-words
+-   Words with 50+ answered trials (our minimum requirement)
+    -   75,008 unique word forms
+        -   35,157 words
+        -   40,002 non-words
+-   Focus on 19,000 pairs (1000 X 19 languages/dialects)
 
-￼
+## Priming: Priming? {.smaller}
 
-Key decisions: • Used OpenSubtitles corpus for frequency • Used fastText word embeddings (subs2vec models) • Used cosine similarity • Selected top 5 neighbors per concept • Cross-referenced across languages • Native speaker validation • Avoided selecting in English first → then translating
+```{r}
+knitr::include_graphics("images/original.boxplots.png")
+```
 
-Slide idea:
+## Priming: What Primed? {.smaller}
 
-“Alternative multiverse options” • Different corpus (Wikipedia only?) • Different embedding model (word2vec? GloVe?) • Lemmatized vs surface forms • Different similarity threshold (\<.15 for unrelated) • Association norms instead of embeddings
+-   Total Pairs:
+    -   19,000 unique pairs with at least 50 answers on both the related and unrelated condition
+    -   14,170 priming pairs “work”
+-   Matched Pairs:
+    -   32 “work” in every language
+    -   947 “work” in half of the languages
+    -   All “work” in at least 4/19 languages (dna-fingerprint, dvd-video)
 
-You can say:
+## Priming: What Primed? {.smaller}
 
-“Each of these would produce a different stimulus set — potentially a different priming distribution.”
+![](images/clipboard-1723783399.png){width="444"}
 
-⸻
+## Research DOF {.smaller}
 
-3️⃣ Nonword Construction Decisions
+-   We know that choices a researcher makes can lead to different outcomes @silberzahn2018
+-   Researcher degrees of freedom occur at many stages in the project @wicherts2016
+-   Occurs across linguistic research @roettger2019 and even with statistical software @hodges2023
+-   This study had *many* places that included possible choice points:
+    -   Stimuli selection \[corpora used, ways we selected\]
+    -   Study design and adaptive sampling
+    -   Similarity calculation
+    -   Processing / calculation of priming scores
+    -   Analysis
 
-Major methodological point.
+## SPAML: Processing Pipeline {.smaller}
 
-Decisions: • Wuggy-like algorithm for alphabetic languages • Radical/stroke manipulation for logographic languages • Native speaker validation • Matched length and transition frequency • Avoided pseudohomophones
+-   As part of the registered report, the admin team designed a processing pipeline based on other smart people
+    -   Mostly from the Semantic Priming Project @hutchison2013
+    -   Based on feedback from other collaborators who asked "why" in the registered report
+    -   Small adjustments from reviewer feedback
 
-Multiverse angle: • What if: • We allowed pseudohomophones? • Matched bigram frequency differently? • Used pronounceability norms? • Used simpler random strings?
+## RTs: Transparent Reporting {.smaller}
 
-Nonword construction affects: • Lexical decision difficulty • RT distribution tails • Accuracy exclusions • Cross-language comparability
+@loenneker2024
 
-⸻
+![](images/clipboard-2667185129.png)
 
-4️⃣ Sampling Design Decisions (Huge Strength of Study)
+## SPAML: Processing Pipeline {.smaller}
 
-Adaptive AIPE sampling
++-----------------+---------------+------------------+---------------+
+|                 | Participants  | Trials           | Stimuli       |
++=================+===============+==================+===============+
+| External Events |               | Duplicate trials | Miscodings    |
++-----------------+---------------+------------------+---------------+
+| Fixed           | 18 years      | \< 160 ms        |               |
+|                 |               |                  |               |
+|                 | 80% accuracy  | \> 3000 ms       |               |
+|                 |               |                  |               |
+|                 | 100 Trials    | Correct          |               |
++-----------------+---------------+------------------+---------------+
+| Data            |               | Z-score 2.5      |               |
+|                 |               |                  |               |
+|                 |               | Z-score 3.0      |               |
++-----------------+---------------+------------------+---------------+
 
-￼
+## SPAML: Processing Pipeline {.smaller}
 
-Decisions: • Minimum per item: 50 • Maximum per item: 320 • Stopping rule: SE ≈ 0.09 • Decreased probability once item met precision goal • Z-scored by participant session
+-   Even when you write a pre-registered plan, sometimes things are not clear
 
-Multiverse perspective: • Fixed N per language instead? • Fixed N per item? • Different stopping rule (SE = .06? .12?) • Target reliability (.80) instead of SE?
+![](images/clipboard-895996300.png)
 
-This is a perfect place to discuss:
+## Multiverse Analysis: A Solution? {.smaller}
 
-“We optimized precision, not power — which is a philosophical choice.”
-
-⸻
-
-5️⃣ Participant-Level Exclusion Decisions
-
-Pre-registered criteria
-
-￼
-
-Participant-level: • Age ≥ 18 • ≥100 trials • ≥80% accuracy
-
-Critical deviation: • Two interpretations of accuracy formula • Strict version retained fewer participants
-
-Multiverse slide:
-
-Run: • 80% • 75% • 85% • Alternative accuracy formula • No accuracy exclusion
-
-Ask:
-
-“Does priming change meaningfully?”
-
-This is an extremely clean multiverse axis.
-
-⸻
-
-6️⃣ Trial-Level Cleaning Decisions
-
-Major researcher degrees of freedom here.
-
-Decisions: • Removed: • Timeouts (\>3000ms) • Incorrect trials • RT \< 160ms • Z-scored within session • Tested: • Full data • \|Z\| \> 2.5 removed • \|Z\| \> 3.0 removed
-
-Multiverse axes: • No lower bound? • 100ms instead of 160ms? • No Z trimming? • 2.0 instead of 2.5? • 99th percentile trimming? • Log-transform instead of Z-score? • Mixed-effects model at trial level instead of item-level averages?
-
-You already have a built-in mini-multiverse: • Full • Z2.5 • Z3.0
-
-That’s very elegant.
-
-⸻
-
-7️⃣ Priming Score Construction Decision
-
-Priming defined as:
-
-Unrelated (Z) − Related (Z)
-
-Item-level averages.
-
-Alternatives: • Trial-level mixed model • Participant-level priming • Median instead of mean • Raw RT difference instead of Z • Log-RT difference • Include accuracy in composite score • Drift-diffusion modeling
-
-This is a great “hidden degrees of freedom” slide.
-
-⸻
-
-8️⃣ Model Specification Decisions
-
-Hypothesis 1: • Intercept-only model • Priming \> 0
-
-Hypothesis 2: • Add random intercept for language • Compare AIC • Conclude heterogeneity if ΔAIC ≥ 2
-
-￼
-
-Multiverse: • Bayesian model? • Random slopes? • Treat language as fixed effect? • Meta-analytic approach? • Hierarchical trial-level model? • Cross-classified random effects (item × language)?
-
-You can say:
-
-“We chose parsimony. But a richer hierarchical model might redistribute variance differently.”
-
-⸻
-
-9️⃣ Reliability Decisions
-
-Item reliability: • Split-half • Spearman-Brown correction • 100 random splits
-
-Participant reliability: • Same approach
-
-Multiverse: • Bootstrapped reliability? • Hierarchical reliability? • ICC instead of split-half? • Reliability at language level?
-
-This connects directly to: • Sample size per item • SE stopping rule • Interpretation of cross-language variance
-
-⸻
-
-🔟 Cross-Language Variability Framing
-
-You found: • Small but non-zero language variance • Pseudo R² \< .01
-
-Multiverse extensions: • Does variance increase with: • Orthographic depth? • Morphological complexity? • Corpus size? • Item reliability? • Script type (logographic vs alphabetic)?
-
-This moves the talk from: “Do languages differ?” to “What explains why they differ?”
-
-⸻
-
-🎯 How to Present the Multiverse Section
-
-I’d structure it like this:
-
-Slide 1: “Researcher Degrees of Freedom”
-
-List 6 decision layers: • Stimuli • Nonwords • Sampling • Exclusions • Priming computation • Modeling
-
-Slide 2: “What Actually Changes the Result?”
-
-Show: • Effect stays positive • Magnitude shifts slightly • Language variance small but stable
-
-Then say:
-
-“The priming effect is robust — but its size and heterogeneity are conditional on analytic decisions.”
-
-⸻
-
-💡 High-Level Conceptual Framing for Audience
-
-You could close this section with: • Registered Reports constrain flexibility • But multiverse thinking reveals where flexibility still exists • Large-scale datasets amplify the impact of preprocessing choices • Transparency + shared data → enables secondary multiverse analyses
-
-⸻
-
-If You Want a Very Sharp Conceptual Ending Slide
-
-Title:
-
-“What Did We Learn About Priming — and What Did We Learn About Decisions?”
-
-Two columns:
-
-Priming • Robust across 19 languages • Small heterogeneity • Improved item reliability
-
-Decisions • Exclusion rules slightly shift magnitude • Z-thresholds minimally affect conclusions • Stimulus selection is a massive hidden decision • Modeling framework shapes interpretation of variability
-
-⸻
-
-If you’d like, I can also: • Draft a 5-minute version • Draft a 15-minute version • Help you turn this into slides • Or help you design an actual small multiverse re-analysis plan for a follow-up paper
-
-## paper
-
-![<https://ars.els-cdn.com/content/image/1-s2.0-S0010945223002964-mmc3.pdf>](images/clipboard-2667185129.png)
-
-<https://ars.els-cdn.com/content/image/1-s2.0-S0010945223002964-mmc4.pdf>
+@heyman2025
 
 ![](images/clipboard-3980866384.png)
 
-## What we did
+## Multiverse Analysis {.smaller}
 
-+-----------------+--------------+------------------+------------+
-|                 | Participants | Trials           | Stimuli    |
-+=================+==============+==================+============+
-| External Events |              | Duplicate trials | Miscodings |
-+-----------------+--------------+------------------+------------+
-| Fixed           | 18 years     | \< 160 ms        |            |
-|                 |              |                  |            |
-|                 | 80% accuracy | \> 3000 ms       |            |
-|                 |              |                  |            |
-|                 | 100 Trials   | Correct          |            |
-+-----------------+--------------+------------------+------------+
-| Data            |              | Z-score 2.5      |            |
-|                 |              |                  |            |
-|                 |              | Z-score 3.0      |            |
-+-----------------+--------------+------------------+------------+
+-   An analysis in which a researcher may:
 
-## What we could do
+    -   "perform *all* analyses across the whole set of alternatively processed data sets corresponding to a large set of reasonable scenarios" @steegen2016
 
-note calculated on the full data each criteria and then removed on each stage to avoid order effects
+-   Allows for the study of the robustness and sensitivity of the effect of analytic choices on the research results
+
+-   *All* is a bit crazy...
+
+## Research Question {.smaller}
+
+-   Clearly outline the substantive research question
+-   Define scope of multiverse
+    -   Processing choices (data multiverse)
+    -   Analysis choices (model multiverse)
+-   Define the goal of the multiverse
+    -   Assessing robustness
+    -   Examining boundary conditions
+    -   Increasing transparency
+
+## Today's Research Question {.smaller}
+
+-   What are the effects of processing choices on German priming?
+
+-   Data Multiverse focusing on pre-processing
+
+-   Assessing robustness
+
+## Other Multiverse Notes {.smaller}
+
+-   Not all combinations make sense together
+
+-   Not accounted for: order effects
+
+    -   Each was examined on the full data and then excluded
+
+    -   Z-scoring was always calculated/excluded at the end
+
+## Possible: Participant Exclusions {.smaller}
 
 | Type         | Explanation         | Options                       |
 |--------------|---------------------|-------------------------------|
@@ -246,7 +273,7 @@ note calculated on the full data each criteria and then removed on each stage to
 | Participants | Performance cut off | 5%, 10% performers            |
 | Participants | RT cut off          | Lowest RT variability 5%, 10% |
 
-## Trials
+## Possible: Trial Exclusions {.smaller}
 
 | Type   | Explanation    | Options             |
 |--------|----------------|---------------------|
@@ -257,7 +284,7 @@ note calculated on the full data each criteria and then removed on each stage to
 | Trials | Lower Bound    | 5%, 10% trimming    |
 | Trials | Upper Bound    | 5%, 10% trimming    |
 
-## Stimuli
+## Possible: Stimuli Exclusions {.smaller}
 
 | Type    | Explanation          | Options          |
 |---------|----------------------|------------------|
@@ -265,3 +292,250 @@ note calculated on the full data each criteria and then removed on each stage to
 | Stimuli | Accuracy             | None, 25%, 50%   |
 | Stimuli | Sample size          | None, 30, 50     |
 | Stimuli | Lower Bound Accuracy | 5%, 10% trimming |
+
+## Multiverse Results: All {.smaller}
+
+```{r}
+results <- read.csv("multiverse_results.csv") %>% 
+  mutate(
+    
+    # ------------------
+    # Participant labels
+    # ------------------
+    P_label = recode(P_type,
+      "none" = "None",
+      "accuracy" = "Acc",
+      "performance" = "Perf",
+      "accuracy+numtrials" = "Acc + N",
+      "accuracy+rtvar" = "Acc + RTvar",
+      "performance+numtrials" = "Perf + N",
+      "performance+rtvar" = "Perf + RTvar"
+    ),
+    
+    # ------------------
+    # Trial labels
+    # ------------------
+    T_label = recode(T_type,
+      "none" = "None",
+      "bounds_rt" = "RT Bounds",
+      "bounds_percent" = "RT %",
+      "bounds_rt+z" = "RT + Z",
+      "bounds_percent+z" = "% + Z"
+    ),
+    
+    # ------------------
+    # Stimulus labels
+    # ------------------
+    S_label = recode(S_type,
+      "none" = "None",
+      "accuracy" = "Acc",
+      "lower_bound_accuracy" = "Acc Trim",
+      "accuracy+sample" = "Acc + N",
+      "lower_bound_accuracy+sample" = "Trim + N"
+    )
+  ) %>% 
+  mutate(
+    P_label = factor(P_label, levels = c(
+      "None", "Acc", "Perf",
+      "Acc + N", "Acc + RTvar",
+      "Perf + N", "Perf + RTvar"
+    )),
+    
+    T_label = factor(T_label, levels = c(
+      "None", "RT Bounds", "RT %",
+      "RT + Z", "% + Z"
+    )),
+    
+    S_label = factor(S_label, levels = c(
+      "None", "Acc", "Acc Trim",
+      "Acc + N", "Trim + N"
+    ))
+  )
+
+spec_curve <- results %>%
+  arrange(mean_priming_z) %>%
+  mutate(
+    spec_id = row_number(),
+    se = sd_priming_z / sqrt(n_targets),
+    ci_low = mean_priming_z - 1.96 * se,
+    ci_high = mean_priming_z + 1.96 * se,
+    sign_group = case_when(
+      ci_high < 0 ~ "negative",
+      ci_low > 0 ~ "positive",
+      TRUE ~ "neutral"
+    )
+  )
+```
+
+```{r}
+ggplot(spec_curve, aes(x = spec_id, y = mean_priming_z)) +
+  # Light confidence intervals
+  geom_errorbar(
+    aes(ymin = ci_low, ymax = ci_high),
+    width = 0,
+    alpha = 0.15,
+    color = "gray"
+  ) +
+  # Points on top
+  geom_point(
+    alpha = 0.6,
+    size = 1.4,
+    color = "#2C7BB6"
+  ) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(
+    x = "Specification (ordered)",
+    y = "Mean Priming (Z)",
+    title = "Specification Curve With 95% Confidence Intervals"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Multiverse Results: Participant {.smaller}
+
+```{r}
+p_top <- ggplot(spec_curve,
+                aes(spec_id, mean_priming_z, color = sign_group)) +
+  geom_errorbar(
+    aes(ymin = ci_low, ymax = ci_high),
+    width = 0,
+    alpha = 0.1
+  ) +
+  geom_point(size = 1.3) +
+  scale_color_manual(
+    values = c(
+      negative = "#D7191C",   # red
+      neutral  = "grey75",    # white/grey
+      positive = "#2C7BB6"    # blue
+    )
+  ) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(
+    y = "Mean Priming (Z)",
+    x = NULL
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = "none"
+  )
+
+p_bottom <- ggplot(spec_curve,
+                   aes(spec_id, P_label)) +
+  geom_point(size = 1.2, color = "black", alpha = .7) +
+  labs(
+    x = "Specification (ordered)",
+    y = "Participant Rule"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none"
+  )
+
+p_top / p_bottom + plot_layout(heights = c(2.5, 1))
+```
+
+## Multiverse Results: Trials {.smaller}
+
+```{r}
+p_bottom <- ggplot(spec_curve,
+                   aes(spec_id, T_label)) +
+  geom_point(size = 1.2, color = "black", alpha = .7) +
+  labs(
+    x = "Specification (ordered)",
+    y = "Trial Rule"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none"
+  )
+
+p_top / p_bottom + plot_layout(heights = c(2.5, 1))
+```
+
+## Multiverse Results: Stimuli {.smaller}
+
+```{r}
+p_bottom <- ggplot(spec_curve,
+                   aes(spec_id, S_label)) +
+  geom_point(size = 1.2, color = "black", alpha = .7) +
+  labs(
+    x = "Specification (ordered)",
+    y = "Stimuli Rule"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none"
+  )
+
+p_top / p_bottom + plot_layout(heights = c(2.5, 1))
+```
+
+## Multiverse Results: Combinations {.smaller}
+
+```{r}
+heat_data <- results %>%
+  group_by(P_label, T_label, S_label) %>%
+  summarise(
+    mean_effect = mean(mean_priming_z),
+    .groups = "drop"
+  )
+
+ggplot(heat_data,
+       aes(x = T_label,
+           y = P_label,
+           fill = mean_effect)) +
+  
+  geom_tile() +
+  
+  scale_fill_gradient2(
+    low = "#D7191C",
+    mid = "white",
+    high = "#2C7BB6",
+    midpoint = .12
+  ) +
+  
+  facet_wrap(~ S_label) +
+  
+  labs(
+    x = "Trial Rule",
+    y = "Participant Rule",
+    fill = "Mean Priming (Z)",
+    title = "Three-Way Multiverse Heatmap"
+  ) +
+  
+  theme_minimal(base_size = 15) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face = "bold")
+  )
+```
+
+## Final Thoughts {.smaller}
+
+-   Priming effects in German are robust
+    -   The priming effect remains positive
+    -   Magnitude varies slightly
+-   Preprocessing matters but it's not arbitrary
+    -   "None" decisions show more variability
+-   Multiverse analysis can be a diagnostic tool
+
+## Final Thoughts {.smaller}
+
+-   Rather than defending one preprocessing pipeline as "correct", we can show that the theoretical claim survives across many reasonable ones
+
+## We Want You! {.smaller}
+
+-   SPAML Part 2 was funded!
+-   We are collecting data on:
+    -   Priming
+    -   Age of Acquisition, Imageability, Familiarity, Valence, Arousal, and Concreteness
+    -   For words not covered by current data
+-   Please join us!
+
+## References {.smaller}
