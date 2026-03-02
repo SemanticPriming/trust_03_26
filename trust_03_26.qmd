@@ -215,23 +215,23 @@ If you’d like, I can also: • Draft a 5-minute version • Draft a 15-minute 
 
 ![](images/clipboard-3980866384.png)
 
-## What we did 
+## What we did
 
-+-----------------+-----------------+------------------+-----------------+
-|                 | Participants    | Trials           | Stimuli         |
-+=================+=================+==================+=================+
-| External Events |                 | Duplicate trials | Miscodings      |
-+-----------------+-----------------+------------------+-----------------+
-| Fixed           | 18 years        | \< 160 ms        |                 |
-|                 |                 |                  |                 |
-|                 | 80% accuracy    | \> 3000 ms       |                 |
-|                 |                 |                  |                 |
-|                 | 100 Trials      | Correct          |                 |
-+-----------------+-----------------+------------------+-----------------+
-| Data            |                 | Z-score 2.5      |                 |
-|                 |                 |                  |                 |
-|                 |                 | Z-score 3.0      |                 |
-+-----------------+-----------------+------------------+-----------------+
++-----------------+--------------+------------------+------------+
+|                 | Participants | Trials           | Stimuli    |
++=================+==============+==================+============+
+| External Events |              | Duplicate trials | Miscodings |
++-----------------+--------------+------------------+------------+
+| Fixed           | 18 years     | \< 160 ms        |            |
+|                 |              |                  |            |
+|                 | 80% accuracy | \> 3000 ms       |            |
+|                 |              |                  |            |
+|                 | 100 Trials   | Correct          |            |
++-----------------+--------------+------------------+------------+
+| Data            |              | Z-score 2.5      |            |
+|                 |              |                  |            |
+|                 |              | Z-score 3.0      |            |
++-----------------+--------------+------------------+------------+
 
 ## What we could do
 
@@ -257,7 +257,7 @@ note calculated on the full data each criteria and then removed on each stage to
 | Trials | Lower Bound    | 5%, 10% trimming    |
 | Trials | Upper Bound    | 5%, 10% trimming    |
 
-## Stimuli 
+## Stimuli
 
 | Type    | Explanation          | Options          |
 |---------|----------------------|------------------|

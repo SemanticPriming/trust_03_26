@@ -184,6 +184,7 @@ compute_priming <- function(df) {
   # -------------------------------------------------
   
   pair_df <- df %>%
+    arrange(observation, fix_sender) %>% 
     group_by(observation, pair_id) %>%
     mutate(which = row_number()) %>%
     ungroup() %>%
@@ -453,7 +454,7 @@ nrow(grid)
 write.csv(grid, "structured_multiverse_grid.csv", row.names = FALSE)
 ```
 
-### Run Grid 
+### Run Grid
 
 ```{r}
 run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
@@ -517,7 +518,7 @@ run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
     }
   )
   
-  filename <- paste0("multiverse_chunk_", chunk_id, ".csv")
+  filename <- paste0("data/multiverse_chunk_", chunk_id, ".csv")
   write.csv(results, filename, row.names = FALSE)
   
   return(results)
@@ -533,9 +534,33 @@ for (k in seq_along(starts)) {
   run_multiverse_chunk(starts[k], ends[k], paste0("F_", k))
   cat("Forward:", starts[k], "\n")
 }
+
+# ends_back <- seq(total_specs, 1, by = -chunk_size)
+# starts_back <- pmax(ends_back - chunk_size + 1, 1)
+# 
+# for (k in seq_along(ends_back)) {
+#   run_multiverse_chunk(starts_back[k], ends_back[k], paste0("B_", k))
+#   cat("Backward:", starts_back[k], "\n")
+# }
 ```
 
 ```{r}
 # total participants 
 length(unique(dat$observation))
+```
+
+## Combine Results
+
+```{r}
+files <- list.files(
+  path = "data",
+  pattern = "multiverse_chunk_.*\\.csv$",
+  full.names = TRUE
+)
+
+all_results <- files %>%
+  map_dfr(read.csv) %>% 
+  distinct(across(colnames(grid)), .keep_all = TRUE)
+
+write.csv(all_results, "multiverse_results.csv")
 ```
