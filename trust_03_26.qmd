@@ -538,4 +538,6 @@ ggplot(heat_data,
     -   For words not covered by current data
 -   Please join us!
 
+![](images/clipboard-3339766356.png)
+
 ## References {.smaller}
