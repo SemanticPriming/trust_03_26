@@ -532,7 +532,7 @@ run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
 chunk_size <- 20
 total_specs <- nrow(grid)
 
-starts <- seq(1, total_specs, by = chunk_size)
+starts <- seq(3621, total_specs, by = chunk_size)
 ends   <- pmin(starts + chunk_size - 1, total_specs)
 
 for (k in seq_along(starts)) {
