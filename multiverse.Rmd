@@ -457,9 +457,6 @@ write.csv(grid, "structured_multiverse_grid.csv", row.names = FALSE)
 ### Run Grid
 
 ```{r}
-# randomly order grid for presentation random sample
-grid <- grid[sample(1:nrow(grid), size = nrow(grid)), ]
-
 run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
   
   results <- map_dfr(
@@ -532,21 +529,13 @@ run_multiverse_chunk <- function(start_i, end_i, chunk_id) {
 chunk_size <- 20
 total_specs <- nrow(grid)
 
-starts <- seq(3621, total_specs, by = chunk_size)
+starts <- seq(1, total_specs, by = chunk_size)
 ends   <- pmin(starts + chunk_size - 1, total_specs)
 
 for (k in seq_along(starts)) {
   run_multiverse_chunk(starts[k], ends[k], paste0("F_", k))
   cat("Forward:", starts[k], "\n")
 }
-
-# ends_back <- seq(total_specs, 1, by = -chunk_size)
-# starts_back <- pmax(ends_back - chunk_size + 1, 1)
-# 
-# for (k in seq_along(ends_back)) {
-#   run_multiverse_chunk(starts_back[k], ends_back[k], paste0("B_", k))
-#   cat("Backward:", starts_back[k], "\n")
-# }
 ```
 
 ```{r}
